@@ -1,5 +1,4 @@
-service:
-  name: aws-serverless-api
+service: aws-serverless-api
 
 # Add the serverless-webpack plugin
 plugins:
@@ -76,18 +75,51 @@ functions:
           method: delete
           path: delete-post/{postId}
           cors: true
+  getWarehouse:
+    handler: src/functions/getWarehouse.handler
+    events:
+      - http:
+          method: get
+          path: get-warehouse
+          cors: true
+  addWarehouse:
+    handler: src/functions/addGoods.handler
+    events:
+      - http:
+          method: post
+          path: add-goods
+          cors: true
+  releaseById:
+    handler: src/functions/releaseById.handler
+    events:
+      - http:
+          method: delete
+          path: release-by-id/{id}
+          cors: true
 
 resources:
   Resources:
     PostsListTable:
+      # Type: AWS::DynamoDB::Table
+      # Properties:
+      #   TableName: ${self:provider.environment.POSTS_TABLE}
+      #   AttributeDefinitions:
+      #     - AttributeName: postId
+      #       AttributeType: S
+      #   KeySchema:
+      #     - AttributeName: postId
+      #       KeyType: HASH
+      #   ProvisionedThroughput:
+      #     ReadCapacityUnits: 1
+      #     WriteCapacityUnits: 1
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:provider.environment.POSTS_TABLE}
+        TableName: Warehouse
         AttributeDefinitions:
-          - AttributeName: postId
+          - AttributeName: id
             AttributeType: S
         KeySchema:
-          - AttributeName: postId
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
