@@ -9,6 +9,8 @@ import middify from "../core/middify";
 import formatJSONResponse from "../core/formatJsonResponse";
 import warehouseService from "../database/services";
 import AddGoods from "../dtos/addGoodsDto";
+import { zodValidator } from "../core/zod";
+import { addGoodsSchema } from "../validationSchemas/warehouseSchemas";
 
 export const handler: Handler = middify(
   async (
@@ -34,4 +36,4 @@ export const handler: Handler = middify(
       return formatJSONResponse(400, err);
     }
   }
-);
+).use(zodValidator(addGoodsSchema));
